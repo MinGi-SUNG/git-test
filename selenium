@@ -1,0 +1,166 @@
+package selenium_test;
+
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+//import org.openqa.selenium.support.u
+
+public class miniSelenium {
+
+	public static void main(String[] args) {
+		
+		
+		
+		Scanner sc = new Scanner(System.in);
+	
+		WebDriver driver = new ChromeDriver();
+		
+		driver.get("https://www.naver.com/");
+		WebElement searchBox = 
+				driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[3]/div[2]/div/form/fieldset/div/input"));
+		searchBox.sendKeys("박스오피스");
+		searchBox.sendKeys(Keys.ENTER);
+		
+		List<WebElement> newsTitleList = 
+				driver.findElements(By.className("name"));
+		
+		for (int i = 0; i <= 2 ; i++) {
+			System.out.print("흥행순 " + (i+1) + "위 = ");
+			System.out.println(newsTitleList.get(i).getText());
+		}
+		
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+//		driver.quit();
+		
+		
+		System.out.println("시청할 영화를 입력하세요(1,2,3)");
+		int movieChoice = sc.nextInt() - 1;
+		
+		
+		String myMovie = newsTitleList.get(movieChoice).getText();
+		System.out.println(myMovie + "을(를) 예매합니다");
+		System.out.println();
+		
+		driver.get("https://www.lottecinema.co.kr/NLCHS/Ticketing");
+			
+		WebElement place1 = 
+				driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div[1]/div[2]/ul/li[1]/div/div/ul/li[4]"));
+		place1.click();
+		
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		
+		
+		WebElement place2 = 
+				driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div[1]/div[2]/ul/li[1]/div/div/ul/li[4]/div/div/div[1]/div/ul/li[2]"));
+		place2.click();
+		
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		
+		List<WebElement> movieList = 
+				driver.findElements(By.xpath("/html/body/div[6]/div/div[2]/div[2]/div[2]/div[2]/div/div[1]/div/ul/li/a/div[2]/div[1]/strong"));
+		
+		for (WebElement mov : movieList) {
+			String temp = mov.getText();
+			if (myMovie.equals(temp)) {
+				mov.click();	
+			}
+		}
+		
+		System.out.println("영화시간을 선택하세요:");
+		System.out.println();
+		
+		List<WebElement> timeList = 
+				driver.findElements(By.xpath("/html/body/div[6]/div/div[2]/div[3]/div[2]/ul/li[1]/div/div/div[1]/div/div/div[2]/ul[2]/li/a/dl/dd[1]/strong"));
+		
+		for (int i = 0; i < timeList.size(); i++) {
+		    WebElement tim = timeList.get(i);
+		    String temp = tim.getText();
+		    System.out.println((i+1)+ ": " + temp);
+		}
+		
+//		for (WebElement tim : timeList) {
+//			String temp = tim.getText();
+//			System.out.println(temp);
+//		}
+		
+		int timeChoice = sc.nextInt() - 1;
+		String myTime = timeList.get(timeChoice).getText();
+
+		for (WebElement mov : timeList) {
+			String temp = mov.getText();
+			if (myTime.equals(temp)) {
+				mov.click();	
+			}
+		}
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+
+		
+		WebElement gogogo = 
+				driver.findElement(By.xpath("/html/body/div[7]/div[2]/div[2]/a[2]"));
+		gogogo.click();
+		
+//		/html/body/div[6]/div[2]/ul/li/button
+		
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+
+		
+		WebElement login = 
+				driver.findElement(By.xpath("/html/body/div[6]/div[2]/ul/li/button"));
+		login.click();
+		
+		WebElement IDBox = 
+				driver.findElement(By.xpath("/html/body/div[6]/div/ul/li[1]/div/div/div/div[1]/div[1]/input[1]"));
+		
+		IDBox.sendKeys("dkwjf@gmail.com");
+		
+		
+		WebElement PasswordBox = 
+		driver.findElement(By.xpath("/html/body/div[6]/div/ul/li[1]/div/div/div/div[1]/div[1]/input[2]"));
+		
+		PasswordBox.sendKeys("kjfijwqiflkf");
+		//3반화이팅!
+		
+		PasswordBox.sendKeys(Keys.ENTER);
+
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		
+		System.out.println("영화 인원수를 입력하세요");
+		int howmany = sc.nextInt();
+		
+		for (int i = 0; i < howmany; i++) {
+			WebElement peopleUp = 
+				driver.findElement(By.xpath("/html/body/div[7]/div/div[3]/div/div[2]/div[1]/div/div[2]/ul/li[1]/span/button[2]"));
+			peopleUp.click();
+			driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		}
+		
+		WebElement seat = 
+				driver.findElement(By.xpath("/html/body/div[7]/div/div[3]/div/div[2]/div[2]/div[3]/article/div[1]/div/div[1]/div/div/div/div/div/div/a[28]"));
+		seat.click();
+		
+		driver.manage().timeouts().implicitlyWait(2000, TimeUnit.SECONDS);
+		
+		WebElement delete = 
+				driver.findElement(By.xpath("/html/body/div[11]/div[3]/button"));
+		delete.click();
+		
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+	
+		
+		WebElement pay = 
+				driver.findElement(By.xpath("/html/body/div[7]/div/div[3]/div/div[2]/div[3]/div/div[2]/a[1]"));
+		pay.click();
+		
+		
+	}
+}
